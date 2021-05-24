@@ -1,0 +1,113 @@
+ {% extends 'base.html' %}
+{% load product_extras %}
+{% url 'extra' as extra %}
+{% block  content %}
+
+{% if cart.products.exists %}
+<div class="col-8" style="margin-right:100px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th  scope="row">🛍️ Producto</th>
+                    <th  scope="row">🧮N° de días</th>
+					<th  scope="row">👦N° de niños</th>
+					<th  scope="row">🧑N° de adultos</th>
+                    <th  scope="row">💲Precio</th>
+					<th  scope="row">➕Extras</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for cp in cart.products_related %}
+                    {% with product=cp.product %}
+                <tr>
+                    <th>{{ forloop.couter }}</th>
+                    <th> 
+
+                        {% if product.image %}
+							<img src="{{ product.image.url}}" alt="Imagen del Producto" width="100" height="60">
+                        {% endif%}
+                    </th>
+                    <th>
+                        <a href="{% url 'products:product' product.slug %}">
+                            {{ product.title}}
+                        </a>
+                        <form action="{% url 'carts:remove' %}" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="product_id" value="{{ product.slug }}">
+							<input type="hidden" name="cartproduct_id" value="{{cp.id}}">
+							<button type="submit" class="btn btn-link text-danger" style="padding:0px">Eliminar</button>
+						</form>
+
+                    </th>
+                    <th>
+                        {{ cp.quantity }}
+                    </th>
+					<th>
+                        {{ cp.cant_ninios}}
+                    </th>
+					<th>
+                        {{ cp.cant_adultos}}
+                    </th>
+                    <th>
+                        <span class="font-weight-bold text-danger">{{product.price | price_format}}</span>
+                    </th>
+					<th>
+						{% for serv in servicios %}
+							{% if serv.a_id_cartproduct.id == cp.id %}
+								{% if serv.desc_servicio == "Transporte" %}
+									{% if serv.t_id_transporte != Null %}
+										<a href="{% url 'carts:eliminar_transporte' serv.id_servicio_extra %}" class="btn btn-outline-success btn-xs">Eliminar transporte</a>
+									{% else %}
+										<center><a href="{% url 'carts:extra_transporte' product.slug %}" class="btn btn-outline-success btn-xs">Transporte</a></center>
+									{% endif %}	
+								{% endif %}								
+							{% endif %}
+						{% endfor %}
+						{% for serv in servicios %}
+							{% if serv.a_id_cartproduct.id == cp.id %}
+								{% if serv.desc_servicio == "Tour" %}
+									{% if serv.t_id_tour != Null %}
+										<a href="{% url 'carts:eliminar_tour' serv.id_servicio_extra %}" class="btn btn-outline-success btn-xs">Eliminar tour</a>
+									{% else %}
+										<center><a href="{% url 'carts:extra_tour' product.slug %}" class="btn btn-outline-success btn-xs">Tour</a></center>
+									{% endif %}	
+								{% endif %}								
+							{% endif %}
+						{% endfor %}
+                    </th>
+                </tr>
+                    {% endwith %}
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+<div class="col mt-4">
+  <div class="card mt-4">
+    <div class="card-body">
+    <div class="font-weight-bold">
+        Subtotal: ({{ cart.products.count}}) <span class="text-danger">{{ cart.subtotal | price_format }}</span>
+    </div>
+	<div class="font-weight-bold">
+        Total: ({{ cart.products.count}}) <span class="text-danger">{{ cart.total | price_format }}</span>
+    </div>
+    <div class="mt-2">
+        <a href="{% url 'orders:order' %}" class="btn btn-success">💳 Proceder al pago</a>
+    </div>
+    </div>
+   </div>
+</div>
+
+
+{% else %}
+<div class="col" style="margin-left:auto; margin-right:auto;">
+    <center><p class="h3">Tu carrito de compras está vacío.</p></center>
+    <a href="{% url 'index' %}"><center>Volver a la página principal</center></a>
+
+</div>
+{% endif %}
+
+{% endblock  %}

@@ -1,0 +1,42 @@
+{% if sino == "NO" %}
+	<form action="{% url 'carts:add' %}" method="post"> {% csrf_token %}
+		<input type="hidden" name="product_id" value="{{ product.id }}">
+		<div class="">
+		<!--d-inline es para que los componentes se encuentren en linea-->
+			
+			
+			<label for="start">Fecha de inicio:</label>
+			<input type="date" id="fecha_inicio" name="fecha_inicio" value="2020-01-01" min="1985-01-01" max="2022-12-31"><br>
+			<label for="start">Fecha de termino:</label>
+			<input type="date" id="fecha_termino" name="fecha_termino" value="2020-01-02" min="1985-01-01" max="2022-12-31"><br>
+			{{form.cant_ninios.label_tag}}
+			{{form.cant_ninios}}<br>
+			{% if form.cant_ninios.errors %}
+				{{form.cant_ninios.errors}}
+			{% endif %}
+			{{form.cant_adultos.label_tag}}
+			{{form.cant_adultos}}<br>
+			{% if form.cant_adultos.errors %}
+				{{form.cant_adultos.errors}}
+			{% endif %}
+		</div>
+		<button type="submit" class="btn btn-warning mt-2">Agregar al carrito</button>
+	</form>
+
+
+
+	<script>
+		// the start_date and end_date are the ids that django form fields created
+		$("#daterange").daterangepicker({
+			locale: {
+			  format: 'YYYY-MM-DD'
+			},
+			startDate: '{{daterange_form.start_date.value}}',
+			endDate: '{{daterange_form.end_date.value}}'
+		});
+	</script>
+{% else %}
+	<div class="btn-group">
+		<a  class="btn btn-outline-success btn-lg">YA AGREGADO</a> 
+	</div>
+{% endif %}

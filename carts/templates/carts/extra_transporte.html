@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="../static/css/style.css" />
+<ul class="list-group">
+       <br>
+       <h4 class="text-center"> {{message}} </h4>
+	   <div class="row">
+	   {% for product in transporte %}
+			<!--Como hay codigo duplicado se genera un nuevo snippet con el for -->
+			
+			<div class="col-4 mt-3">
+				<!-- Producto en tarjetas-->
+				<div class="card text-center h-100" style="border: 2px solid #C00; border-color: black;">
+					<div><img class="card-img-top" src="{% static 'images/auto_generico.png' %}" alt="Card image cap" style=" height: 150px; object-fit: cover;"></div>
+					<div class="card-body">
+					  <h4 class="card-title">Transporte: {{product.id_transporte}}</h4>
+					  <p class="card-text" align="justify">Vehiculo: {{product.vehiculo }}</p>
+					  <p class="card-text" align="justify">Destino: {{pro.e_id_empresa.direccion }}</p>
+					  <p class="card-text" align="justify">Chofer: {{product.u_id_funcionario.first_name }} {{ product.u_id_funcionario.last_name }}</p>
+					  <form method="post"> {% csrf_token %}
+						<p class="card-text" align="justify">Origen: <input id="origen" name="origen" value=""/></p>
+						<p class="card-text" align="justify"><label for="start">Fecha: </label><input type="date" id="fecha_servicio" name="fecha_servicio" value="2020-01-01" min="1985-01-01" max="2022-12-31"></p>
+						<p class="card-text" align="justify"><label for="start">Hora: </label><input type="time" id="hora_servicio" name="hora_servicio" min="00:00" value="00:00"></p>
+					</div>
+					<div class="card-footer"style="border-top-width: 3px; border-color: lightblue; background-color: #88B1FF;"> 
+						<div class="btn-group">
+							<input type="hidden" name="pro_id" value="{{ pro.id }}">
+							<input type="hidden" name="id_transporte" value="{{ product.id_transporte }}">
+							<button type="submit" class="btn btn-outline-success btn-lg">🚗 Seleccionar</button> 
+							</form>
+							<a class="btn btn-outline-warning btn-lg "> 
+								 <span class="text-danger">${{product.precio}}</span>
+							</a> 
+						</div>
+					</div>
+				</div> 
+			</div>
+		{% endfor %}
+	</div>
+</ul>
+{% endblock %}
+
+
+
+
+    
+

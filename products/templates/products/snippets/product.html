@@ -1,0 +1,39 @@
+{% load static %}
+			<link rel="stylesheet" href="../static/css/style.css" />
+          <!-- Producto en tarjetas-->
+          <div class="card text-center h-100" style="border: 2px solid #C00; border-color: black;">
+            {% if product.image %}
+            <div class="zoom"><img class="card-img-top" src="{{ product.image.url}}" alt="Card image cap" style="border: black 2px solid; height: 150px; object-fit: cover;"></div>
+            {% else %}
+            <img class="card-img-top" src="{% static 'images/aimagenot.png' %}" alt="Card image cap" style=" height: 150px; object-fit: cover;">
+
+            {% endif %}
+            <div class="card-body">
+              <h4 class="card-title">{{product.t_id_tipo.descripcion }} {{product.title}}</h4>
+              <p class="card-text" align="justify"> Baños: {{product.cantidad_de_baños }} &nbsp; &nbsp;	Dormitorios: {{product.cantidad_de_dormitorios }}</p>
+              <p class="card-text" align="justify"> Camas: {{product.cantidad_de_camas }} &nbsp; &nbsp;	Muebles: {{product.cantidad_de_muebles }}</p>
+              <p class="card-text" align="justify"> Televisores: {{product.cantidad_de_televisores }}  Tamaño: {{product.tamaño_de_departamento }} m2</p>
+			  <p class="card-text" align="justify"> Estado: {{product.e_id_estado.descricion_estado }}</p>
+            </div>
+            <div class="card-footer"style="border-top-width: 3px; border-color: lightblue; background-color: #88B1FF;"> 
+			{% if product.e_id_estado.descricion_estado == "Libre" or product.e_id_estado.descricion_estado == "Disponible" %}
+				<div class="btn-group">
+					<a href="{% url 'products:product' product.slug %}" class="btn btn-outline-success btn-lg"> 
+						👀 VER
+						  </a> 
+
+								<a class="btn btn-outline-warning btn-lg "
+						   > 
+						 <span class="text-danger">${{product.price}}</span>
+				</a> 
+				</div>
+            {% else %}
+				<div class="btn-group">
+					<a  class="btn btn-outline-success btn-lg"> 
+						NO DISPONIBLE
+				</a> 
+				</div>
+			{% endif %}
+
+            </div> 
+          </div>

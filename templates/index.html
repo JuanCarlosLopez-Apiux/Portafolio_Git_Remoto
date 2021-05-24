@@ -1,0 +1,33 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+   
+       {% include 'products/snippets/categories.html' %}
+
+
+
+
+         <div class="col-10">
+            <h1>{{title}}</h1>
+        <ul class="list-group">
+            <br>
+       <h4 class="text-center"> {{message}} </h4>
+
+     <!--   {% include 'products/snippets/carousel.html' %}-->
+
+       {% include 'products/snippets/search.html' %}
+
+       {% include 'products/snippets/list.html' %}
+
+
+        </ul>
+
+
+    </div>
+
+{% endblock %}
+
+
+
+{% load static %}

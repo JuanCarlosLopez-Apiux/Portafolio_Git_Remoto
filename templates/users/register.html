@@ -1,0 +1,132 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<script>
+  $(function () {
+    $("#datetimepicker1").datetimepicker({
+      format: 'DD/MM/YYYY',
+    });
+  });
+</script>
+
+<div class="col">
+    <h2>Registro de usuario</h2>
+        <form method="post"> {% csrf_token %}
+            <div class="form-group">
+                {{form.rut_usuario.label_tag}}
+                {{form.rut_usuario}}
+				
+				{% if form.rut_usuario.errors %}
+					{{form.rut_usuario.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+                {{form.fecha_nacimiento.label_tag}}
+                {{form.fecha_nacimiento}}
+				{% if form.fecha_nacimiento.errors %}
+					{{form.fecha_nacimiento.errors}}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.username.label_tag}}
+                {{form.username}}
+				{% if form.username.errors %}
+					{{form.username.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+                {{form.first_name.label_tag}}
+                {{form.first_name}}
+            </div>
+			<div class="form-group">
+                {{form.last_name.label_tag}}
+                {{form.last_name}}
+            </div>
+            <div class="form-group">
+                {{form.email.label_tag}}
+                {{form.email}}
+				{% if form.email.errors %}
+					{{form.email.errors}}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.password.label_tag}}
+                {{form.password}}
+				{% if form.password.errors %}
+					{{form.password.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+                {{form.password2.label_tag}}
+                {{form.password2}}
+				{% if form.password.errors %}
+					{{form.password.errors}}
+                {% endif %}
+            </div>
+			
+			<h2>Datos de tarjeta de credito:</h2>
+			
+			<div class="form-group">
+                {{form.numero_tarjeta.label_tag}}
+                {{form.numero_tarjeta}}
+				{% if form.numero_tarjeta.errors %}
+					{{form.numero_tarjeta.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+                {{form.codigo.label_tag}}
+                {{form.codigo}}
+				{% if form.codigo.errors %}
+					{{form.codigo.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+				Compañia:
+				<select id="compania" name="compania">
+					<option value="Visa">Visa</option>
+					<option value="MasterCard">MasterCard</option>
+				</select>
+            </div>
+			<div class="form-group">
+                {{form.mes_exp.label_tag}}
+                {{form.mes_exp}}
+				{% if form.mes_exp.errors %}
+					{{form.mes_exp.errors}}
+                {% endif %}
+            </div>
+			<div class="form-group">
+                {{form.anio_exp.label_tag}}
+                {{form.anio_exp}}
+				{% if form.anio_exp.errors %}
+					{{form.anio_exp.errors}}
+                {% endif %}
+            </div>
+			
+
+            <!--
+			mejor hacer esto iterando con un ciclo for
+            
+			
+            {% for campo in form %}
+            <div class="form-group">
+				{% if campo.label_tag == "Código" %}
+					<h2>Datos de tarjeta de credito:</h2>
+					{{campo.label_tag}}
+					{{campo}}
+				{% else %}
+					{{campo.label_tag}}
+					{{campo}}
+				{% endif %}
+				
+                {% if campo.errors %}
+                {{campo.errors}}
+                {% endif %}
+
+            </div>
+
+            {%endfor%}
+			-->
+            <button type="submit" class="btn btn-primary">Registar</button>
+        </form>
+</div>
+{% endblock %}

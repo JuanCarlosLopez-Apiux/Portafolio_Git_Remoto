@@ -1,0 +1,63 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+{% if Tour != Null %}
+	<ul class="list-group">
+		   <br>
+		   <h4 class="text-center"> {{message}} </h4>
+		   <div class="row">
+		   {% for product in Tour %}
+				<!--Como hay codigo duplicado se genera un nuevo snippet con el for -->
+				
+				<div class="col-4 mt-3">
+					<link rel="stylesheet" href="../static/css/style.css" />
+					<!-- Producto en tarjetas-->
+					<div class="card text-center h-100" style="border: 2px solid #C00; border-color: black;">
+						<div><img class="card-img-top" src="{% static 'images/tour_generico.png' %}" alt="Card image cap" style=" height: 150px; object-fit: cover;"></div>
+						<div class="card-body">
+						  <h4 class="card-title">Tour: {{product.id_tour}}</h4>
+						  <p class="card-text" align="justify">Vacantes: {{product.numero_vacantes }}</p>
+						  <p class="card-text" align="justify">Hora inicio: {{product.hora_inicio }}</p>
+						  <p class="card-text" align="justify">Hora termino: {{product.hora_termino }}</p>
+						  <p class="card-text" align="justify">Fecha termino: {{product.fecha_tour }}</p>
+						  <p class="card-text" align="justify">Descripción: {{product.descripcion_tour }}</p>
+						</div>
+						<div class="card-footer"style="border-top-width: 3px; border-color: lightblue; background-color: #88B1FF;"> 
+							<div class="btn-group">
+							{% if product.numero_vacantes == 0 %}
+								<div class="btn-group">
+									<a  class="btn btn-outline-success btn-lg"> 
+										NO DISPONIBLE
+								</a> 
+								</div>
+							{% else %}
+								<form method="post"> {% csrf_token %}
+									<input type="hidden" name="pro_id" value="{{ pro.id }}">
+									<input type="hidden" name="id_tour" value="{{ product.id_tour }}">
+									<button type="submit" class="btn btn-outline-success btn-lg">🚗 Seleccionar</button> 
+								</form>
+								<a class="btn btn-outline-warning btn-lg "> 
+									 <span class="text-danger">${{product.precio}}</span>
+								</a> 
+							{% endif %}
+							</div>
+						</div>
+					</div> 
+				</div>
+			{% endfor %}
+		</div>
+	</ul>
+{% else %}
+	<div class="col" style="margin-left:auto; margin-right:auto;">
+		<center><p class="h3">No existen Tours aun.</p></center>
+		<a href="{% url 'carts:cart' %}"><center>Volver al carrito</center></a>
+
+	</div>
+{% endif %}
+{% endblock %}
+
+
+
+
+		
+

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="col-3 mt-3" style="top:70px;"> 
+{% if product.image %}
+    <img src="{{ product.image.url}}" alt="{{product.title}}" width="500" height="300">
+{% else %}
+    <img class="card-img-top" src="{% static 'images/aimagenot.png' %}" alt="Card image cap" style=" height: 200px; object-fit: cover;">
+{% endif %}
+</div>
+
+
+<div class="col mt-5" style="left:250px;  width:10px;">
+
+    <div class="h1">
+    {{product.t_id_tipo.descripcion }} {{product.title}}
+    </div>
+
+        <div class="h5 font-weight-bold">
+        Precio(por día): <span class="text-danger">${{product.price}}</span>
+            </div>
+
+			<p class="card-text" align="justify"> Baños: {{product.cantidad_de_baños }} &nbsp; &nbsp;	Dormitorios: {{product.cantidad_de_dormitorios }}</p>
+            <p class="card-text" align="justify"> Camas: {{product.cantidad_de_camas }} &nbsp; &nbsp;	Muebles: {{product.cantidad_de_muebles }}</p>
+            <p class="card-text" align="justify"> Televisores: {{product.cantidad_de_televisores }}  Tamaño: {{product.tamaño_de_departamento }} m2</p>
+			<p class="card-text" align="justify"> Estado: {{product.e_id_estado.descricion_estado }}</p>
+			  
+        <div class="">
+		<p>Descripción:</p>
+        <p>{{product.description}} </p>
+        </div>
+        <div class="">
+            {% include 'carts/snippets/add.html' %}
+        </div>
+</div>
+
+
+{% endblock %}

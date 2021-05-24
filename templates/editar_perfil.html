@@ -1,0 +1,143 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<script>
+  $(function () {
+    $("#datetimepicker1").datetimepicker({
+      format: 'DD/MM/YYYY',
+    });
+  });
+</script>
+
+<div class="col">
+    <h2>Actualización de usuario</h2>
+	<h4>Rut: {{ user.rut_usuario }}</h4>
+        <form method="post"> {% csrf_token %}
+            <div class="form-group">
+                {{form.username.label_tag}}
+                {{form.username}}<br>
+				Usuario actual: {{user.username}}<br>
+				{% if form_user.username.errors %}
+						{{form_user.username.errors}}
+					{% endif %}
+				<button type="submit" class="btn btn-primary">Actualizar Username</button>
+            </div>
+        </form>
+		<form method="post"> {% csrf_token %}
+			<div class="form-group">
+                {{form_nombres.first_name.label_tag}}
+                {{form_nombres.first_name}}<br>
+            </div>
+			<div class="form-group">
+                {{form_nombres.last_name.label_tag}}
+                {{form_nombres.last_name}}<br>
+				Nombre actual: {{user.first_name}} {{user.last_name}} <br>
+				<button type="submit" class="btn btn-primary">Actualizar Nombre</button>
+            </div>
+		</form>
+		
+		<form method="post"> {% csrf_token %}
+            <div class="form-group">
+                {{form_email.email.label_tag}}
+                {{form_email.email}}<br>
+				Email actual: {{user.email}}<br>
+				{% if form_email.email.errors %}
+						{{form_email.email.errors}}
+					{% endif %}
+				<button type="submit" class="btn btn-primary">Actualizar Email</button>
+            </div>
+        </form>
+		
+		<form method="post"> {% csrf_token %}
+			<div class="form-group">
+				{{form_pass.password.label_tag}}
+				{{form_pass.password}}
+				{% if form_pass.password.errors %}
+					{{form_pass.password.errors}}
+				{% endif %}
+				{% if form_pass.password2.errors %}
+					{{form_pass.password2.errors}}
+				{% endif %}
+			</div>
+			<div class="form-group">
+				{{form_pass.password2.label_tag}}
+				{{form_pass.password2}}
+				{% if form_pass.password.errors %}
+					{{form_pass.password.errors}}
+				{% endif %}
+				{% if form_pass.password2.errors %}
+					{{form_pass.password2.errors}}
+				{% endif %}
+			</div>	
+			<button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+		</form>
+		<h2>Actualizar tarjeta de credito:</h2>
+			<form method="post"> {% csrf_token %}
+				<div class="form-group">
+					{{form_tarjeta.numero_tarjeta.label_tag}}
+					{{form_tarjeta.numero_tarjeta}}<br>
+					Actual: {{ ultimos }}XXXX 
+					{% if form_tarjeta.numero_tarjeta.errors %}
+						{{form_tarjeta.numero_tarjeta.errors}}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{form_tarjeta.codigo.label_tag}}
+					{{form_tarjeta.codigo}}<br>
+					Actual: {{ tarjeta.codigo }}
+					{% if form_tarjeta.codigo.errors %}
+						{{form_tarjeta.codigo.errors}}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					Compañia:
+					<select id="compania" name="compania">
+						<option value="Visa">Visa</option>
+						<option value="MasterCard">MasterCard</option>
+					</select><br>
+					Actual: {{tarjeta.compania}} 
+				</div>
+				<div class="form-group">
+					{{form_tarjeta.mes_exp.label_tag}}
+					{{form_tarjeta.mes_exp}}<br>
+					Actual: {{ tarjeta.mes_exp }}
+					{% if form_tarjeta.mes_exp.errors %}
+						{{form_tarjeta.mes_exp.errors}}
+					{% endif %}
+				</div>
+				<div class="form-group">
+					{{form_tarjeta.anio_exp.label_tag}}
+					{{form_tarjeta.anio_exp}}<br>
+					Actual: {{ tarjeta.anio_exp }}
+					{% if form_tarjeta.anio_exp.errors %}
+						{{form_tarjeta.anio_exp.errors}}
+					{% endif %}
+				</div>
+				<button type="submit" class="btn btn-primary">Actualizar Tarjeta de credito</button>
+			</form>
+			
+            <!--
+			mejor hacer esto iterando con un ciclo for
+            
+			
+            {% for campo in form %}
+            <div class="form-group">
+				{% if campo.label_tag == "Código" %}
+					<h2>Datos de tarjeta de credito:</h2>
+					{{campo.label_tag}}
+					{{campo}}
+				{% else %}
+					{{campo.label_tag}}
+					{{campo}}
+				{% endif %}
+				
+                {% if campo.errors %}
+                {{campo.errors}}
+                {% endif %}
+
+            </div>
+
+            {%endfor%}
+			-->
+</div>
+{% endblock %}
