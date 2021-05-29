@@ -7,7 +7,6 @@ from carts.models import Check_In, Check_Out, Tarjeta_Credito, Tour, Transporte,
 class ProductAdmin(admin.ModelAdmin):
     #Creo esta clase porque no quiero mostrar el slug ya que se va a generar automaticamente
     fields = ('title', 'description', 'price', 'image', 'cantidad_de_baños', 'cantidad_de_dormitorios', 'cantidad_de_camas', 'cantidad_de_muebles', 'cantidad_de_televisores', 'tamaño_de_departamento', 't_id_tipo', 'e_id_estado', 'e_id_empresa')
-    #mostar en el administrador aparte del title que es el str, mostrar el slug y created_at
     list_display = ('__str__', 'slug', 'created_at')
 
 admin.site.register(Product,ProductAdmin )

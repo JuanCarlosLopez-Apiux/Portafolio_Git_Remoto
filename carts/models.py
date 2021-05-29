@@ -20,19 +20,11 @@ class Cart(models.Model):
     total = models.IntegerField(validators=[MaxValueValidator(9999999)], default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(validators=[MaxValueValidator(9999)], default=1)
-    fecha_inicio = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
-    #cantidad_de_dias = models.IntegerField(validators=[MaxValueValidator(999)], default=1)
-    fecha_termino = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
-    #d_numero_de_departamento = models.ForeignKey('Product', models.DO_NOTHING, db_column='d_numero_de_departamento')
-    #descripcion_servicio = models.TextField()  # This field type is a guess.
+    fecha_inicio = models.DateField(default=timezone.now, blank=True)
+    fecha_termino = models.DateField(default=timezone.now, blank=True)
     cant_ninios = models.IntegerField(validators=[MaxValueValidator(25)], default=0)
-    #Originalmente es el rut del cliente, pero al anexarse con el user, cambia a id_user
-    #c_rut_cliente = models.ForeignKey('User', models.DO_NOTHING, db_column='c_rut_cliente')
     cant_adultos = models.IntegerField(validators=[MaxValueValidator(999)], default=1)
-    #e_id_estado = models.ForeignKey('EstadoArriendo', models.DO_NOTHING, db_column='e_id_estado')
     pagado = models.BinaryField(default=0)
-    #Originalmente se anexaba inmediatamente el check in al realizar un arriendo
-    #ch_id_check_in = models.ForeignKey('CheckIn', models.DO_NOTHING, db_column='ch_id_check_in')
 
 
     FEE = 0.05 #comision del 5% de la compra
@@ -41,7 +33,6 @@ class Cart(models.Model):
         return self.cart_id
 
     def products_related(self):
-        #estamos obteniendo todos los objetos cartproducts y product en una sola consulta
         return self.cartproducts_set.select_related('product')
 
     @property
@@ -65,16 +56,10 @@ class CartProducts(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(validators=[MaxValueValidator(9999)], default=1)
-    fecha_inicio = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
-    #cantidad_de_dias = models.IntegerField(validators=[MaxValueValidator(999)], default=1)
-    fecha_termino = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
-    #d_numero_de_departamento = models.ForeignKey('Product', models.DO_NOTHING, db_column='d_numero_de_departamento')
-    #descripcion_servicio = models.TextField()  # This field type is a guess.
+    fecha_inicio = models.DateField(default=timezone.now, blank=True) 
+    fecha_termino = models.DateField(default=timezone.now, blank=True)
     cant_ninios = models.IntegerField(validators=[MaxValueValidator(25)], default=0)
-    #Originalmente es el rut del cliente, pero al anexarse con el user, cambia a id_user
-    #c_rut_cliente = models.ForeignKey('User', models.DO_NOTHING, db_column='c_rut_cliente')
     cant_adultos = models.IntegerField(validators=[MaxValueValidator(999)], default=1)
-    #e_id_estado = models.ForeignKey('EstadoArriendo', models.DO_NOTHING, db_column='e_id_estado')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def Create_CartProducts(self, cart, product, fecha_inicio, fecha_termino, quantity, cant_ninios, cant_adultos):
@@ -87,7 +72,6 @@ class CartProducts(models.Model):
         self.cant_adultos = cant_adultos
         self.save()
         
-        # do something with the book
 
     def update_fecha_inicio(self, fecha):
         self.fecha_inicio = fecha
@@ -106,7 +90,6 @@ class CartProducts(models.Model):
         self.save()
         
 def set_cart_id(sender, instance, *args, **kwargs):
-    #si el carrito no posee un identificador unico
     if not instance.cart_id:
         instance.cart_id = str(uuid.uuid4())
 
@@ -116,7 +99,7 @@ pre_save.connect(set_cart_id, sender=Cart)
 
 class Check_In(models.Model):
     id_check_in = models.AutoField(primary_key=True)
-    descripcion_check_in = models.TextField()  # This field type is a guess.
+    descripcion_check_in = models.TextField()
     a_id_arriendo = models.ForeignKey(Cart, models.DO_NOTHING, db_column='a_id_arriendo', default=1)
     firmado = models.BinaryField()
 
@@ -125,7 +108,7 @@ class Check_In(models.Model):
         db_table = 'Check_In'
 
 class Check_Out(models.Model):
-    id_check_out = models.AutoField(primary_key=True)  # This field type is a guess.
+    id_check_out = models.AutoField(primary_key=True)
     desc_danios = models.TextField()
     monto_danios = models.BigIntegerField()
     pagado = models.BinaryField()
@@ -140,11 +123,9 @@ class Check_Out(models.Model):
 class Tarjeta_Credito(models.Model):
     codigo = models.IntegerField()
     numero_tarjeta = models.BigIntegerField(primary_key=True)
-    compania = models.TextField()  # This field type is a guess.
+    compania = models.TextField()
     mes_exp = models.IntegerField(validators=[MaxValueValidator(13)], default=1)
     anio_exp = models.IntegerField(validators=[MaxValueValidator(100)], default=20)
-    #Originalmente es el rut del cliente, pero al anexarse con el user, cambia a id_user
-    #c_rut_cliente = models.ForeignKey('User', models.DO_NOTHING, db_column='c_rut_cliente')
     u_id_cliente = models.ForeignKey(User, models.DO_NOTHING, db_column='u_id_cliente')
 
     class Meta:
@@ -153,12 +134,12 @@ class Tarjeta_Credito(models.Model):
 
 
 class Tour(models.Model):
-    id_tour = models.AutoField(primary_key=True)  # This field type is a guess.
-    descripcion_tour = models.TextField()  # This field type is a guess.
+    id_tour = models.AutoField(primary_key=True)
+    descripcion_tour = models.TextField()
     numero_vacantes = models.IntegerField(validators=[MaxValueValidator(501)])
     precio = models.BigIntegerField(validators=[MaxValueValidator(1000000)])
-    hora_inicio = models.TimeField(default=timezone.now, blank=True)  # This field type is a guess.
-    hora_termino = models.TimeField(default=timezone.now, blank=True)  # This field type is a guess.
+    hora_inicio = models.TimeField(default=timezone.now, blank=True)
+    hora_termino = models.TimeField(default=timezone.now, blank=True)
     fecha_tour = models.DateField(default=timezone.now, blank=True)
     
     class Meta:
@@ -167,10 +148,10 @@ class Tour(models.Model):
 
 
 class Transporte(models.Model):
-    id_transporte = models.AutoField(primary_key=True)  # This field type is a guess.
-    vehiculo = models.TextField()  # This field type is a guess.
-    destino = models.TextField()  # This field type is a guess.
-    origen = models.TextField()  # This field type is a guess.
+    id_transporte = models.AutoField(primary_key=True)   
+    vehiculo = models.TextField() 
+    destino = models.TextField()
+    origen = models.TextField()
     precio = models.IntegerField(validators=[MaxValueValidator(1000000)])
     u_id_funcionario = models.ForeignKey(User, models.DO_NOTHING, db_column='u_id_funcionario')
 
@@ -180,13 +161,13 @@ class Transporte(models.Model):
         
 
 class Servicios_Extra(models.Model):
-    id_servicio_extra = models.AutoField(primary_key=True)  # This field type is a guess.
+    id_servicio_extra = models.AutoField(primary_key=True)
     monto_servicio = models.IntegerField(validators=[MaxValueValidator(1000000)])
-    desc_servicio = models.TextField()  # This field type is a guess.
-    estado_servicio = models.TextField()  # This field type is a guess.
-    fecha_servicio = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
+    desc_servicio = models.TextField() 
+    estado_servicio = models.TextField() 
+    fecha_servicio = models.DateField(default=timezone.now, blank=True)
     a_id_cartproduct = models.ForeignKey(CartProducts, models.DO_NOTHING, db_column='a_id_cartproduct', null=True)
-    horario_servicio = models.TimeField(default=timezone.now, blank=True)  # This field type is a guess.
+    horario_servicio = models.TimeField(default=timezone.now, blank=True)
     t_id_transporte = models.ForeignKey('Transporte', models.DO_NOTHING, db_column='t_id_transporte', blank=True, null=True)
     t_id_tour = models.ForeignKey('Tour', models.DO_NOTHING, db_column='t_id_tour', blank=True, null=True)
     t_id_cart = models.ForeignKey('Cart', models.DO_NOTHING, db_column='t_id_cart', blank=True, null=True)

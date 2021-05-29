@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Region(models.Model):
     id_region = models.AutoField(primary_key=True)
-    descripcion = models.TextField()  # This field type is a guess.
+    descripcion = models.TextField()
 
     class Meta:
         managed = True
@@ -19,7 +19,7 @@ class Region(models.Model):
 
 class Ciudad(models.Model):
     id_ciudad = models.AutoField(primary_key=True)
-    descripcion = models.TextField()  # This field type is a guess.
+    descripcion = models.TextField()
     r_id_region = models.ForeignKey('Region', models.DO_NOTHING, db_column='r_id_region', default=1)
 
     class Meta:
@@ -28,7 +28,7 @@ class Ciudad(models.Model):
 
 class Comuna(models.Model):
     id_comuna = models.AutoField(primary_key=True)
-    descripcion = models.TextField()  # This field type is a guess.
+    descripcion = models.TextField()
     c_id_ciudad = models.ForeignKey(Ciudad, models.DO_NOTHING, db_column='c_id_ciudad', default=1)
 
     class Meta:
@@ -37,10 +37,10 @@ class Comuna(models.Model):
 
 class Empresa(models.Model):
     id_empresa = models.BigIntegerField(primary_key=True, null=False, blank=False, unique=True)
-    direccion = models.TextField()  # This field type is a guess.
+    direccion = models.TextField()
     ndepartamentos_disponibles = models.IntegerField()
     telefono = models.IntegerField()
-    nombre = models.TextField()  # This field type is a guess.
+    nombre = models.TextField()
     c_id_comuna = models.ForeignKey(Comuna, models.DO_NOTHING, db_column='c_id_comuna', default=1)
     
     class Meta:
@@ -49,7 +49,7 @@ class Empresa(models.Model):
   
 class Estado_Departamento(models.Model):
     id_estado = models.AutoField(primary_key=True)
-    descricion_estado = models.TextField()  # This field type is a guess.
+    descricion_estado = models.TextField()
 
     class Meta:
         managed = True
@@ -58,7 +58,7 @@ class Estado_Departamento(models.Model):
 
 class Tipo_Departamento(models.Model):
     id_tipo = models.AutoField(primary_key=True)
-    descripcion = models.TextField()  # This field type is a guess.
+    descripcion = models.TextField()
 
     class Meta:
         managed = True
@@ -85,10 +85,6 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-#    def save(self, *args, **kwargs):
-#        self.slug = slugify(self.title)
-#        super(Product, self).save(*args, **kwargs) 
-
 
     
 def set_slug(sender, instance, *args, **kwargs):
@@ -99,14 +95,13 @@ def set_slug(sender, instance, *args, **kwargs):
             print("Este es slug", slug)
 
         instance.slug = slug
-#antes que un objeto Product se almacene, se ejecutara el callback set_slug
 pre_save.connect(set_slug, sender=Product)
 
 class Mantencion(models.Model):
-    id_mantencion = models.AutoField(primary_key=True)  # This field type is a guess.
-    fecha_inicio = models.DateField(default=timezone.now, blank=True) # This field type is a guess.
-    fecha_termino = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
-    descripcion_mantencion = models.TextField()  # This field type is a guess.
+    id_mantencion = models.AutoField(primary_key=True)
+    fecha_inicio = models.DateField(default=timezone.now, blank=True)
+    fecha_termino = models.DateField(default=timezone.now, blank=True)
+    descripcion_mantencion = models.TextField()
     d_numero_de_departamento = models.ForeignKey(Product, models.DO_NOTHING, db_column='d_numero_de_departamento', default=1)
 
     class Meta:
@@ -114,7 +109,7 @@ class Mantencion(models.Model):
         db_table = 'Mantencion'
 
 class Tipo_Inventario(models.Model):
-    descripcion = models.TextField()  # This field type is a guess.
+    descripcion = models.TextField()
     id_tipo = models.AutoField(primary_key=True)
 
     class Meta:
@@ -124,8 +119,8 @@ class Tipo_Inventario(models.Model):
 
 class Inventario(models.Model):
     cantidad = models.IntegerField()
-    marca = models.TextField()  # This field type is a guess.
-    fecha_compra = models.DateField(default=timezone.now, blank=True)  # This field type is a guess.
+    marca = models.TextField()
+    fecha_compra = models.DateField(default=timezone.now, blank=True)
     d_numero_de_departamento = models.ForeignKey(Product, models.DO_NOTHING, db_column='d_numero_de_departamento', default=1)
     t_id_tipo = models.ForeignKey('Tipo_Inventario', models.DO_NOTHING, db_column='t_id_tipo')
     costo = models.IntegerField()

@@ -9,11 +9,8 @@ from django.contrib.auth import authenticate
 from .forms import RegisterForm, Editar_TarjetaForm, Editar_NombresForm, Editar_UsernameForm, Editar_PasswordForm, Editar_emailForm
 from carts.models import Tarjeta_Credito
 from datetime import date, datetime
-#from django.contrib.auth.models import User
 from products.models import Product, Tipo_Departamento, Estado_Departamento
 from users.models import User
-
-#Vistas basadas en clases. Agilizas el proceso porque usas django, mover a view del proyecto
 
 def index(request):
     products = Product.objects.all().order_by('-id')
@@ -23,7 +20,6 @@ def index(request):
     cartproduct = cart_product = CartProducts.objects.filter(cart=cart).first()
     
     return render(request, 'index.html', {
-        #contexto
         'message': 'Listado de departamentos',
         'title': 'departamentos',
         'products': products,
@@ -42,7 +38,6 @@ def logout_view(request):
 
 
 def register(request):
-    #si el usuario esta atenticado voy a redirigir a index
     error_mes = None
     if request.user.is_authenticated:
         return redirect('index')
@@ -181,21 +176,6 @@ def editar_perfil(request):
         print(error)
         
     if request.method == 'POST' and form_user.is_valid():
-        #cleaned_data es un diccionario
-        #codigo = request.POST.get('codigo')
-        #numero_tarjeta = request.POST.get('numero_tarjeta')
-        #compania = request.POST.get('compania')
-        #mes_exp = request.POST.get('mes_exp')
-        #anio_exp = request.POST.get('anio_exp')
-        
-        #password = form.cleaned_data.get('password')
-        #AHORA OBTENGO ESTO DEL METODO DEL FORM 
-        #user = form.save()
-        #codigo = form.cleaned_data.get('codigo')
-        #numero_tarjeta = form.cleaned_data.get('numero_tarjeta')
-        #compania = form.cleaned_data.get('compania')
-        #mes_exp = form.cleaned_data.get('mes_exp')
-        #anio_exp = form.cleaned_data.get('anio_exp')
         username = form_user.cleaned_data.get('username')
         user = request.user
         un = User.objects.all().filter(id = request.user.id).first()
@@ -218,7 +198,6 @@ def editar_perfil(request):
     })
 
 def eliminar_cuenta(request):
-    #si el usuario esta atenticado voy a redirigir a index
     if request.user.is_authenticated:
         isd = request.user.id
         logout(request)

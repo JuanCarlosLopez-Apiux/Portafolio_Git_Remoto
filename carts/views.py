@@ -26,7 +26,6 @@ def index(request, slug):
         sino = "NO"
         print(sino)
     return render(request, 'products/product.html', {
-        #contexto
         'product': product,
         'form': form,
         'sino':sino
@@ -55,16 +54,7 @@ def add(request):
         servicio2 = Servicios_Extra(monto_servicio= 0, desc_servicio="Tour", estado_servicio="", fecha_servicio="2020-01-01", a_id_cartproduct=cart_product, horario_servicio="00:00", t_id_transporte=None, t_id_tour= None, t_id_cart=cart)
         servicio2.save()
         product = Product.objects.get(pk=request.POST.get('product_id'))
-        # si esa llave no existe, el valor de la llave será uno por default de productos
-        #esta forma de agregar no esta BIEN PORQUE CADA VEZ QUE AGREGO NUEVOS NO SE ACTUALIZA, SOLO LOS QUE ENVIE EN EL MOMENTO
-        #cart.products.add(product, through_defaults={
-        #    'quantity': quantity
-        #    
-        #})
-        #'product_id' es el nombre del formulario html donde obtiene el id del producto
-        
-        #cart es una instacia del modelo por lo que para acceder a atributo products es la relacion ManytoMany
-        
+
         
         return render(request, 'carts/add.html', {
             'inicio': inicio,
@@ -73,18 +63,9 @@ def add(request):
             'cp': cart_product
         })
 
-    #estos nombres son los nombres del formulario los que obtiene el request
     cart = get_or_create_cart(request)
     product = get_object_or_404(Product, pk=request.POST.get('product_id'))
-    # si esa llave no existe, el valor de la llave será uno por default de productos
-    #esta forma de agregar no esta BIEN PORQUE CADA VEZ QUE AGREGO NUEVOS NO SE ACTUALIZA, SOLO LOS QUE ENVIE EN EL MOMENTO
-    #cart.products.add(product, through_defaults={
-    #    'quantity': quantity
-    #    
-    #})
-    #'product_id' es el nombre del formulario html donde obtiene el id del producto
     product = Product.objects.get(pk=request.POST.get('product_id'))
-    #cart es una instacia del modelo por lo que para acceder a atributo products es la relacion ManytoMany
     cart.products.add(product)
 
     return render(request, 'carts/add.html', {

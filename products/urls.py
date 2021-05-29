@@ -3,8 +3,6 @@ from django.urls import path
 from . import views
 from carts.views import index
 
-#con esto decimos que todas estas rutas son de la aplicacion products y asi nos evitamos en conflicto
-#entre rutas, podemos tener dos o mas rutas con el mismo nombre
 app_name = 'products'
 
 

@@ -27,8 +27,6 @@ class Order(models.Model):
     def __str__(self):
         return self.order_id
 
-
-#se hace con un signal pre_save porque es algo que hay que calcular antes de almacenar
 def set_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:
         instance.order_id = str(uuid.uuid4())

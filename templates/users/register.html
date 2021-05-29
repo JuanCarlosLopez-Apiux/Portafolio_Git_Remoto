@@ -102,30 +102,6 @@
                 {% endif %}
             </div>
 			
-
-            <!--
-			mejor hacer esto iterando con un ciclo for
-            
-			
-            {% for campo in form %}
-            <div class="form-group">
-				{% if campo.label_tag == "Código" %}
-					<h2>Datos de tarjeta de credito:</h2>
-					{{campo.label_tag}}
-					{{campo}}
-				{% else %}
-					{{campo.label_tag}}
-					{{campo}}
-				{% endif %}
-				
-                {% if campo.errors %}
-                {{campo.errors}}
-                {% endif %}
-
-            </div>
-
-            {%endfor%}
-			-->
             <button type="submit" class="btn btn-primary">Registar</button>
         </form>
 </div>

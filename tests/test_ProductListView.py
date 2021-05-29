@@ -1,5 +1,4 @@
 from django.test import TestCase
-#from applications.calculos.metric import *
 from products.views import *
 from django.http import HttpRequest
 from django.test import SimpleTestCase
